@@ -354,8 +354,8 @@ function drawsignAssets() {
     blue,
     camX,
     camY + 35,
-    224,
-    212,
+    112,
+    106,
     p,
     1
   );
