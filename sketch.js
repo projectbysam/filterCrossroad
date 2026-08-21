@@ -797,7 +797,7 @@ function drawsignAssets() {
   drawsignAsset(
     red,
     camX + displayW,
-    camY + 1200,
+    camY + 1000,
     92,
     86,
     p,
