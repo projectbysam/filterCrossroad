@@ -374,8 +374,8 @@ function drawsignAssets() {
     cone,
     camX,
     camY + 800,
-    244,
-    284,
+    122,
+    142,
     p,
     3
   );
