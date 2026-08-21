@@ -364,8 +364,8 @@ function drawsignAssets() {
     purple,
     camX + displayW,
     camY + 120,
-    244,
-    232,
+    122,
+    116,
     p,
     2
   );
