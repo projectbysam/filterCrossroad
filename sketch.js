@@ -764,7 +764,7 @@ function drawsignAssets() {
   drawsignAsset(
     cone,
     camX,
-    camY + 300,
+    camY + 600,
     122,
     142,
     p,
@@ -786,7 +786,7 @@ function drawsignAssets() {
   drawsignAsset(
     stoppy,
     camX,
-    camY +  900,
+    camY -  500,
     124,
     210,
     p,
