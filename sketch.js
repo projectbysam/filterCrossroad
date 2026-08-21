@@ -742,7 +742,7 @@ function drawsignAssets() {
   drawsignAsset(
     blue,
     camX,
-    camY + 35,
+    camY + 80,
     112,
     106,
     p,
@@ -753,7 +753,7 @@ function drawsignAssets() {
   drawsignAsset(
     purple,
     camX + displayW,
-    camY + 120,
+    camY + 180,
     118,
     112,
     p,
