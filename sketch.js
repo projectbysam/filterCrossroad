@@ -49,7 +49,7 @@ let characterProgress = 0;
 let characterSpeed = 0.04;
 
 let lastHandTime = 0;
-let handTimeout = 0;
+let handTimeout = 3500;
 
 let characterState = "hidden";
 
