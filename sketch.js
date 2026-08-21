@@ -775,7 +775,7 @@ function drawsignAssets() {
   drawsignAsset(
     warn,
     camX + displayW,
-    camY + 500,
+    camY + 550,
     118,
     190,
     p,
@@ -786,7 +786,7 @@ function drawsignAssets() {
   drawsignAsset(
     stoppy,
     camX,
-    camY + 1000,
+    camY + 950,
     124,
     210,
     p,
@@ -797,7 +797,7 @@ function drawsignAssets() {
   drawsignAsset(
     red,
     camX + displayW,
-    camY + 700,
+    camY + 950,
     92,
     86,
     p,
