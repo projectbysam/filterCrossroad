@@ -742,9 +742,9 @@ function drawsignAssets() {
   drawsignAsset(
     blue,
     camX,
-    camY + 80,
-    112,
-    106,
+    camY + 130,
+    107,
+    101,
     p,
     1
   );
@@ -764,7 +764,7 @@ function drawsignAssets() {
   drawsignAsset(
     cone,
     camX,
-    camY + 500,
+    camY + 300,
     122,
     142,
     p,
@@ -786,7 +786,7 @@ function drawsignAssets() {
   drawsignAsset(
     stoppy,
     camX,
-    camY + displayH,
+    camY + displayH - 300,
     124,
     210,
     p,
@@ -797,7 +797,7 @@ function drawsignAssets() {
   drawsignAsset(
     red,
     camX + displayW,
-    camY + displayH,
+    camY + displayH - 300,
     92,
     86,
     p,
