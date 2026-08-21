@@ -3,8 +3,8 @@ let faces = [];
 let video;
 let bg;
 
-let camW = 640;
-let camH = 480;
+let camW = 2400;
+let camH = 2800;
 let camX;
 let camY;
 
