@@ -7,14 +7,14 @@ let bg;
 let camW = 640;
 let camH = 480;
 
-let displayW = 1200;
-let displayH = 900;
+let displayW = 1360;
+let displayH = 1020;
 
 let camX;
 let camY;
 
 let options = {
-  maxFaces: 2,
+  maxFaces: 5,
   refineLandmarks: false,
   flipped: true
 };
@@ -122,13 +122,7 @@ function draw() {
   filterBuffer.clear();
 
 
-  // =========================================================
-  // FACE FILTER
-  // =========================================================
-
   if (faces.length > 0) {
-
-    // Draw the filter for EVERY detected face
     for (let i = 0; i < faces.length; i++) {
       drawFaceAssets(faces[i]);
     }
@@ -149,10 +143,6 @@ function draw() {
     displayH
   );
 
-
-  // =========================================================
-  // HAND DETECTION
-  // =========================================================
 
   let allFingersOpen = false;
 
@@ -288,10 +278,6 @@ function draw() {
   }
 
 
-  // =========================================================
-  // CHARACTER ANIMATION
-  // =========================================================
-
   if (
     characterState === "visible" &&
     millis() - lastHandTime > handTimeout
@@ -350,11 +336,6 @@ function draw() {
 
     drawCharacters();
   }
-
-
-  // =========================================================
-  // SIGN ANIMATION
-  // =========================================================
 
   if (
     signState === "visible" &&
@@ -416,10 +397,6 @@ function draw() {
   }
 }
 
-
-// =========================================================
-// DRAW ALL FACE ASSETS FOR ONE PERSON
-// =========================================================
 
 function drawFaceAssets(face) {
 
@@ -544,11 +521,6 @@ function drawFaceAssets(face) {
   );
 }
 
-
-// =========================================================
-// FACE ASSET
-// =========================================================
-
 function drawAsset(
   asset,
   face,
@@ -657,10 +629,6 @@ function drawAsset(
   filterBuffer.pop();
 }
 
-
-// =========================================================
-// CHARACTERS
-// =========================================================
 
 function drawCharacters() {
 
