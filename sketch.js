@@ -4,8 +4,8 @@ let faces = [];
 let video;
 let bg;
 
-let camW = 1280;
-let camH = 960;
+let camW = 640;
+let camH = 480;
 
 let displayW = 800;
 let displayH = 600;
