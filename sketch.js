@@ -59,6 +59,7 @@ let signState = "hidden";
 
 let filterBuffer;
 
+
 function preload() {
   faceMesh = ml5.faceMesh(options);
 
@@ -92,6 +93,7 @@ function preload() {
   stoppy = loadImage("asset/stop.png");
 }
 
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
 
@@ -111,6 +113,7 @@ function setup() {
   handPose.detectStart(video, gotHands);
 }
 
+
 function draw() {
   image(bg, 0, 0, width, height);
 
@@ -118,31 +121,43 @@ function draw() {
 
   filterBuffer.clear();
 
-  if (faces.length > 0) {
-    drawAsset(logo, 151, 243, 58, 0, -45);
-    drawAsset(cube, 139, 40, 43, -15, -20);
-    drawAsset(soap, 143, 27, 46, -40, 0);
-    drawAsset(gamelan, 116, 45, 36, -40, 25);
-    drawAsset(cobek, 123, 43, 36, -25, 50);
-    drawAsset(kites, 187, 34, 46, -15, 65);
 
-    drawAsset(movie, 368, 46, 43, 15, -20);
-    drawAsset(recycle, 372, 35, 33, 40, -5);
-    drawAsset(sugar, 447, 25, 38, 40, 20);
-    drawAsset(meow, 352, 38, 31, 45, 40);
-    drawAsset(kancing, 364, 33, 34, 40, 20);
+  // =========================================================
+  // FACE FILTER
+  // =========================================================
+
+  if (faces.length > 0) {
+
+    // Draw the filter for EVERY detected face
+    for (let i = 0; i < faces.length; i++) {
+      drawFaceAssets(faces[i]);
+    }
   }
 
   image(filterBuffer, camX, camY);
 
+
+  // Camera border
   stroke("#751014");
   strokeWeight(3);
   noFill();
-  rect(camX, camY, displayW, displayH);
+
+  rect(
+    camX,
+    camY,
+    displayW,
+    displayH
+  );
+
+
+  // =========================================================
+  // HAND DETECTION
+  // =========================================================
 
   let allFingersOpen = false;
 
   if (hands.length > 0) {
+
     let hand = hands[0];
 
     let wrist = hand.keypoints[0];
@@ -162,25 +177,81 @@ function draw() {
     let thumb = hand.keypoints[4];
     let thumbIP = hand.keypoints[3];
 
+
     let indexOpen =
-      dist(wrist.x, wrist.y, index.x, index.y) >
-      dist(wrist.x, wrist.y, indexPIP.x, indexPIP.y);
+      dist(
+        wrist.x,
+        wrist.y,
+        index.x,
+        index.y
+      ) >
+      dist(
+        wrist.x,
+        wrist.y,
+        indexPIP.x,
+        indexPIP.y
+      );
+
 
     let middleOpen =
-      dist(wrist.x, wrist.y, middle.x, middle.y) >
-      dist(wrist.x, wrist.y, middlePIP.x, middlePIP.y);
+      dist(
+        wrist.x,
+        wrist.y,
+        middle.x,
+        middle.y
+      ) >
+      dist(
+        wrist.x,
+        wrist.y,
+        middlePIP.x,
+        middlePIP.y
+      );
+
 
     let ringOpen =
-      dist(wrist.x, wrist.y, ring.x, ring.y) >
-      dist(wrist.x, wrist.y, ringPIP.x, ringPIP.y);
+      dist(
+        wrist.x,
+        wrist.y,
+        ring.x,
+        ring.y
+      ) >
+      dist(
+        wrist.x,
+        wrist.y,
+        ringPIP.x,
+        ringPIP.y
+      );
+
 
     let pinkyOpen =
-      dist(wrist.x, wrist.y, pinky.x, pinky.y) >
-      dist(wrist.x, wrist.y, pinkyPIP.x, pinkyPIP.y);
+      dist(
+        wrist.x,
+        wrist.y,
+        pinky.x,
+        pinky.y
+      ) >
+      dist(
+        wrist.x,
+        wrist.y,
+        pinkyPIP.x,
+        pinkyPIP.y
+      );
+
 
     let thumbOpen =
-      dist(wrist.x, wrist.y, thumb.x, thumb.y) >
-      dist(wrist.x, wrist.y, thumbIP.x, thumbIP.y);
+      dist(
+        wrist.x,
+        wrist.y,
+        thumb.x,
+        thumb.y
+      ) >
+      dist(
+        wrist.x,
+        wrist.y,
+        thumbIP.x,
+        thumbIP.y
+      );
+
 
     allFingersOpen =
       indexOpen &&
@@ -189,120 +260,444 @@ function draw() {
       pinkyOpen &&
       thumbOpen;
 
+
     if (allFingersOpen) {
+
       lastHandTime = millis();
+
 
       if (
         characterState === "hidden" ||
         characterState === "exiting"
       ) {
+
         characterState = "entering";
         characterProgress = 0;
       }
+
 
       if (
         signState === "hidden" ||
         signState === "exiting"
       ) {
+
         signState = "entering";
         signProgress = 0;
       }
     }
   }
 
+
+  // =========================================================
+  // CHARACTER ANIMATION
+  // =========================================================
+
   if (
     characterState === "visible" &&
     millis() - lastHandTime > handTimeout
   ) {
+
     characterState = "exiting";
     characterProgress = 1;
   }
 
+
   if (characterState === "entering") {
+
     characterProgress += characterSpeed;
-    characterProgress = constrain(characterProgress, 0, 1);
+
+    characterProgress =
+      constrain(
+        characterProgress,
+        0,
+        1
+      );
+
 
     if (characterProgress >= 1) {
+
       characterProgress = 1;
       characterState = "visible";
     }
   }
 
+
   if (characterState === "exiting") {
+
     characterProgress -= characterSpeed;
-    characterProgress = constrain(characterProgress, 0, 1);
+
+    characterProgress =
+      constrain(
+        characterProgress,
+        0,
+        1
+      );
+
 
     if (characterProgress <= 0) {
+
       characterProgress = 0;
       characterState = "hidden";
     }
   }
+
 
   if (
     characterState === "entering" ||
     characterState === "visible" ||
     characterState === "exiting"
   ) {
+
     drawCharacters();
   }
+
+
+  // =========================================================
+  // SIGN ANIMATION
+  // =========================================================
 
   if (
     signState === "visible" &&
     millis() - lastHandTime > handTimeout
   ) {
+
     signState = "exiting";
     signProgress = 1;
   }
 
+
   if (signState === "entering") {
+
     signProgress += signSpeed;
-    signProgress = constrain(signProgress, 0, 1);
+
+    signProgress =
+      constrain(
+        signProgress,
+        0,
+        1
+      );
+
 
     if (signProgress >= 1) {
+
       signProgress = 1;
       signState = "visible";
     }
   }
 
+
   if (signState === "exiting") {
+
     signProgress -= signSpeed;
-    signProgress = constrain(signProgress, 0, 1);
+
+    signProgress =
+      constrain(
+        signProgress,
+        0,
+        1
+      );
+
 
     if (signProgress <= 0) {
+
       signProgress = 0;
       signState = "hidden";
     }
   }
+
 
   if (
     signState === "entering" ||
     signState === "visible" ||
     signState === "exiting"
   ) {
+
     drawsignAssets();
   }
 }
 
+
+// =========================================================
+// DRAW ALL FACE ASSETS FOR ONE PERSON
+// =========================================================
+
+function drawFaceAssets(face) {
+
+  drawAsset(
+    logo,
+    face,
+    151,
+    243,
+    58,
+    0,
+    -45
+  );
+
+
+  drawAsset(
+    cube,
+    face,
+    139,
+    40,
+    43,
+    -15,
+    -20
+  );
+
+
+  drawAsset(
+    soap,
+    face,
+    143,
+    27,
+    46,
+    -40,
+    0
+  );
+
+
+  drawAsset(
+    gamelan,
+    face,
+    116,
+    45,
+    36,
+    -40,
+    25
+  );
+
+
+  drawAsset(
+    cobek,
+    face,
+    123,
+    43,
+    36,
+    -25,
+    50
+  );
+
+
+  drawAsset(
+    kites,
+    face,
+    187,
+    34,
+    46,
+    -15,
+    65
+  );
+
+
+  drawAsset(
+    movie,
+    face,
+    368,
+    46,
+    43,
+    15,
+    -20
+  );
+
+
+  drawAsset(
+    recycle,
+    face,
+    372,
+    35,
+    33,
+    40,
+    -5
+  );
+
+
+  drawAsset(
+    sugar,
+    face,
+    447,
+    25,
+    38,
+    40,
+    20
+  );
+
+
+  drawAsset(
+    meow,
+    face,
+    352,
+    38,
+    31,
+    45,
+    40
+  );
+
+
+  drawAsset(
+    kancing,
+    face,
+    364,
+    33,
+    34,
+    40,
+    20
+  );
+}
+
+
+// =========================================================
+// FACE ASSET
+// =========================================================
+
+function drawAsset(
+  asset,
+  face,
+  landmarkIndex,
+  w,
+  h,
+  offsetX = 0,
+  offsetY = 0
+) {
+
+  let point =
+    face.keypoints[landmarkIndex];
+
+
+  let leftEye =
+    face.keypoints[33];
+
+
+  let rightEye =
+    face.keypoints[263];
+
+
+  let scaleX =
+    displayW / camW;
+
+
+  let scaleY =
+    displayH / camH;
+
+
+  let pointX =
+    point.x * scaleX;
+
+
+  let pointY =
+    point.y * scaleY;
+
+
+  let leftEyeX =
+    leftEye.x * scaleX;
+
+
+  let leftEyeY =
+    leftEye.y * scaleY;
+
+
+  let rightEyeX =
+    rightEye.x * scaleX;
+
+
+  let rightEyeY =
+    rightEye.y * scaleY;
+
+
+  let eyeDistance =
+    dist(
+      leftEyeX,
+      leftEyeY,
+      rightEyeX,
+      rightEyeY
+    );
+
+
+  let faceScale =
+    eyeDistance / 100;
+
+
+  let angle =
+    atan2(
+      rightEyeY - leftEyeY,
+      rightEyeX - leftEyeX
+    );
+
+
+  filterBuffer.push();
+
+
+  filterBuffer.translate(
+    pointX,
+    pointY
+  );
+
+
+  filterBuffer.rotate(angle);
+
+
+  filterBuffer.scale(
+    faceScale
+  );
+
+
+  filterBuffer.imageMode(
+    CENTER
+  );
+
+
+  filterBuffer.image(
+    asset,
+    offsetX,
+    offsetY,
+    w,
+    h
+  );
+
+
+  filterBuffer.pop();
+}
+
+
+// =========================================================
+// CHARACTERS
+// =========================================================
+
 function drawCharacters() {
+
   let p;
 
+
   if (characterState === "exiting") {
-    p = easeIn(characterProgress);
+
+    p =
+      easeIn(
+        characterProgress
+      );
+
   } else {
-    p = easeOut(characterProgress);
+
+    p =
+      easeOut(
+        characterProgress
+      );
   }
 
-  let groupH = height;
+
+  let groupH =
+    height;
+
 
   let leftGroupW =
     groupH *
     charactersLeft.width /
     charactersLeft.height;
 
+
   let rightGroupW =
     groupH *
     charactersRight.width /
     charactersRight.height;
+
 
   drawCharacterGroup(
     charactersLeft,
@@ -314,6 +709,7 @@ function drawCharacters() {
     groupH,
     p
   );
+
 
   drawCharacterGroup(
     charactersRight,
@@ -327,6 +723,7 @@ function drawCharacters() {
   );
 }
 
+
 function drawCharacterGroup(
   img,
   startX,
@@ -337,18 +734,47 @@ function drawCharacterGroup(
   h,
   progress
 ) {
-  let x = lerp(startX, targetX, progress);
-  let y = lerp(startY, targetY, progress);
+
+  let x =
+    lerp(
+      startX,
+      targetX,
+      progress
+    );
+
+
+  let y =
+    lerp(
+      startY,
+      targetY,
+      progress
+    );
+
 
   imageMode(CORNER);
-  image(img, x, y, w, h);
+
+
+  image(
+    img,
+    x,
+    y,
+    w,
+    h
+  );
 }
 
+
+// =========================================================
+// SIGN ASSETS
+// =========================================================
+
 function drawsignAssets() {
+
   let p =
     signState === "exiting"
       ? easeIn(signProgress)
       : easeOut(signProgress);
+
 
   drawsignAsset(
     blue,
@@ -360,6 +786,7 @@ function drawsignAssets() {
     1
   );
 
+
   drawsignAsset(
     purple,
     camX + displayW,
@@ -370,15 +797,17 @@ function drawsignAssets() {
     2
   );
 
+
   drawsignAsset(
     cone,
     camX,
     camY + 800,
-    122,
-    142,
+    244,
+    284,
     p,
     3
   );
+
 
   drawsignAsset(
     warn,
@@ -390,6 +819,7 @@ function drawsignAssets() {
     4
   );
 
+
   drawsignAsset(
     stoppy,
     camX,
@@ -399,6 +829,7 @@ function drawsignAssets() {
     p,
     5
   );
+
 
   drawsignAsset(
     red,
@@ -411,6 +842,7 @@ function drawsignAssets() {
   );
 }
 
+
 function drawsignAsset(
   asset,
   x,
@@ -420,114 +852,115 @@ function drawsignAsset(
   progress,
   offset
 ) {
+
   push();
+
 
   imageMode(CENTER);
 
-  translate(x, y);
+
+  translate(
+    x,
+    y
+  );
+
 
   let scaleAmount =
     easeOut(progress) * 1.12;
 
+
   let rotation =
-    sin(frameCount * 0.08 + offset) *
+    sin(
+      frameCount * 0.08 + offset
+    ) *
     0.12 *
     progress;
 
-  scale(scaleAmount);
-  rotate(rotation);
 
-  image(asset, 0, 0, w, h);
+  scale(
+    scaleAmount
+  );
 
-  pop();
-}
 
-function easeOut(t) {
-  return 1 - pow(1 - t, 3);
-}
+  rotate(
+    rotation
+  );
 
-function easeIn(t) {
-  return pow(t, 3);
-}
 
-function drawAsset(
-  asset,
-  landmarkIndex,
-  w,
-  h,
-  offsetX = 0,
-  offsetY = 0
-) {
-  let face = faces[0];
-
-  let point = face.keypoints[landmarkIndex];
-
-  let leftEye = face.keypoints[33];
-  let rightEye = face.keypoints[263];
-
-  let scaleX = displayW / camW;
-  let scaleY = displayH / camH;
-
-  let pointX = point.x * scaleX;
-  let pointY = point.y * scaleY;
-
-  let leftEyeX = leftEye.x * scaleX;
-  let leftEyeY = leftEye.y * scaleY;
-
-  let rightEyeX = rightEye.x * scaleX;
-  let rightEyeY = rightEye.y * scaleY;
-
-  let eyeDistance =
-    dist(
-      leftEyeX,
-      leftEyeY,
-      rightEyeX,
-      rightEyeY
-    );
-
-  let faceScale = eyeDistance / 100;
-
-  let angle =
-    atan2(
-      rightEyeY - leftEyeY,
-      rightEyeX - leftEyeX
-    );
-
-  let x = pointX;
-  let y = pointY;
-
-  filterBuffer.push();
-
-  filterBuffer.translate(x, y);
-
-  filterBuffer.rotate(angle);
-
-  filterBuffer.scale(faceScale);
-
-  filterBuffer.imageMode(CENTER);
-
-  filterBuffer.image(
+  image(
     asset,
-    offsetX,
-    offsetY,
+    0,
+    0,
     w,
     h
   );
 
-  filterBuffer.pop();
+
+  pop();
 }
+
+
+// =========================================================
+// EASING
+// =========================================================
+
+function easeOut(t) {
+
+  return 1 -
+    pow(
+      1 - t,
+      3
+    );
+}
+
+
+function easeIn(t) {
+
+  return pow(
+    t,
+    3
+  );
+}
+
+
+// =========================================================
+// ML5 CALLBACKS
+// =========================================================
 
 function gotFaces(results) {
+
   faces = results;
+
+  // Useful for testing:
+  console.log(
+    "Faces detected:",
+    faces.length
+  );
 }
 
+
 function gotHands(results) {
+
   hands = results;
 }
 
-function windowResized() {
-  resizeCanvas(windowWidth, windowHeight);
 
-  camX = (width - displayW) / 2;
-  camY = (height - displayH) / 2 + 200;
+// =========================================================
+// RESIZE
+// =========================================================
+
+function windowResized() {
+
+  resizeCanvas(
+    windowWidth,
+    windowHeight
+  );
+
+
+  camX =
+    (width - displayW) / 2;
+
+
+  camY =
+    (height - displayH) / 2 + 200;
 }
