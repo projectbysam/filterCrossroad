@@ -731,11 +731,6 @@ function drawCharacterGroup(
   );
 }
 
-
-// =========================================================
-// SIGN ASSETS
-// =========================================================
-
 function drawsignAssets() {
 
   let p =
@@ -769,7 +764,7 @@ function drawsignAssets() {
   drawsignAsset(
     cone,
     camX,
-    camY + 800,
+    camY + 500,
     122,
     142,
     p,
@@ -780,7 +775,7 @@ function drawsignAssets() {
   drawsignAsset(
     warn,
     camX + displayW,
-    camY + 900,
+    camY + 500,
     118,
     190,
     p,
@@ -791,7 +786,7 @@ function drawsignAssets() {
   drawsignAsset(
     stoppy,
     camX,
-    camY + displayH - 50,
+    camY + displayH,
     124,
     210,
     p,
@@ -802,7 +797,7 @@ function drawsignAssets() {
   drawsignAsset(
     red,
     camX + displayW,
-    camY + displayH - 50,
+    camY + displayH,
     92,
     86,
     p,
