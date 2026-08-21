@@ -7,8 +7,8 @@ let bg;
 let camW = 640;
 let camH = 480;
 
-let displayW = 1600;
-let displayH = 1200;
+let displayW = 800;
+let displayH = 600;
 
 let camX;
 let camY;
