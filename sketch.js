@@ -759,8 +759,8 @@ function drawsignAssets() {
     purple,
     camX + displayW,
     camY + 120,
-    122,
-    116,
+    118,
+    112,
     p,
     2
   );
@@ -770,8 +770,8 @@ function drawsignAssets() {
     cone,
     camX,
     camY + 800,
-    244,
-    284,
+    122,
+    142,
     p,
     3
   );
@@ -781,8 +781,8 @@ function drawsignAssets() {
     warn,
     camX + displayW,
     camY + 900,
-    236,
-    380,
+    118,
+    190,
     p,
     4
   );
@@ -792,8 +792,8 @@ function drawsignAssets() {
     stoppy,
     camX,
     camY + displayH - 50,
-    248,
-    420,
+    124,
+    210,
     p,
     5
   );
@@ -803,8 +803,8 @@ function drawsignAssets() {
     red,
     camX + displayW,
     camY + displayH - 50,
-    184,
-    172,
+    92,
+    86,
     p,
     6
   );
