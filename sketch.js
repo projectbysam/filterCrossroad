@@ -14,7 +14,7 @@ let camX;
 let camY;
 
 let options = {
-  maxFaces: 1,
+  maxFaces: 2,
   refineLandmarks: false,
   flipped: true
 };
