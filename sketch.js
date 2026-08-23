@@ -60,6 +60,13 @@ let signState = "hidden";
 let filterBuffer;
 
 
+let leftTextTitle = "CROSSROAD:\nCROSS,\nCREATE,\nCONNECT";
+let leftTextBody = "IS AN EXHIBITION FEATURING THE FINAL YEAR PROJECTS OF THE 2026 GRADUATING VISUAL COMMUNICATION DESIGN (VCD) STUDENTS FROM SAMPOERNA UNIVERSITY.\n\nINSPIRED BY THE CROSSROAD AS A MEETING POINT, THE EXHIBITION EXPLORES HOW DESIGN CONNECTS DIVERSE IDEAS, PERSPECTIVES, AND DISCIPLINES TO CREATE SOLUTIONS TO REAL-WORLD ISSUES ACROSS VARIOUS SECTORS.";
+
+let rightTextTitle = "ABOUT THE\nEXHIBITION";
+let rightTextBody = "EACH PROJECT REFLECTS THE STUDENTS' CREATIVE APPROACHES TO RESEARCH AND PROBLEM-SOLVING. THROUGH INTERACTIVE EXPERIENCES, VISITORS ARE INVITED TO EXPLORE DESIGN FROM PROCESS TO SOLUTION, DISCOVERING HOW IDEAS EVOLVE THROUGH CREATIVITY, AND CONNECT PEOPLE WITH NEW POSSIBILITIES.";
+
+
 function preload() {
   faceMesh = ml5.faceMesh(options);
 
@@ -91,6 +98,9 @@ function preload() {
   cone = loadImage("asset/cone.png");
   warn = loadImage("asset/warn.png");
   stoppy = loadImage("asset/stop.png");
+
+  font = loadFont("asset/Frutiger.ttf");
+  fontbold = loadFont("asset/Frutiger_bold.ttf");
 }
 
 
@@ -131,7 +141,7 @@ function draw() {
   image(filterBuffer, camX, camY);
 
 
-  // Camera border
+
   stroke("#751014");
   strokeWeight(3);
   noFill();
@@ -142,6 +152,8 @@ function draw() {
     displayW,
     displayH
   );
+
+  drawSideText();
 
 
   let allFingersOpen = false;
@@ -398,6 +410,51 @@ function draw() {
 }
 
 
+function drawSideText() {
+  push();
+  fill("#751014");
+  noStroke();
+  textAlign(LEFT, TOP);
+
+  let columnWidth = 200;
+  let textMargin = 25;
+   
+  let sideGap = 185; 
+
+  let leftX = camX - columnWidth - textMargin;
+  if (leftX < sideGap) leftX = sideGap;
+ // left heading
+  textFont(fontbold);
+  textSize(34);
+  textLeading(36);
+  text(leftTextTitle, leftX, camY, columnWidth);
+
+ // left body
+  textFont(font);
+  textSize(24);
+  textLeading(26);
+  text(leftTextBody, leftX, camY + 175, columnWidth, displayH - 175);
+
+
+  let rightX = camX + displayW + textMargin;
+  if (rightX + columnWidth > width - sideGap) rightX = width - columnWidth - sideGap;
+
+// right headline
+  textFont(fontbold);
+  textSize(34);
+  textLeading(36);
+  text(rightTextTitle, rightX, camY, columnWidth);
+
+// right body
+  textFont(font);
+  textSize(24);
+  textLeading(26);
+  text(rightTextBody, rightX, camY + 95, columnWidth, displayH - 95);
+
+  pop();
+}
+
+
 function drawFaceAssets(face) {
 
   drawAsset(
@@ -631,47 +688,26 @@ function drawAsset(
 
 
 function drawCharacters() {
-
   let p;
 
-
   if (characterState === "exiting") {
-
-    p =
-      easeIn(
-        characterProgress
-      );
-
+    p = easeIn(characterProgress);
   } else {
-
-    p =
-      easeOut(
-        characterProgress
-      );
+    p = easeOut(characterProgress);
   }
 
+  let groupH = height;
 
-  let groupH =
-    height;
+  let leftGroupW = (groupH * charactersLeft.width) / charactersLeft.height;
+  let rightGroupW = (groupH * charactersRight.width) / charactersRight.height;
 
-
-  let leftGroupW =
-    groupH *
-    charactersLeft.width /
-    charactersLeft.height;
-
-
-  let rightGroupW =
-    groupH *
-    charactersRight.width /
-    charactersRight.height;
-
+  let hideOffset = 25; 
 
   drawCharacterGroup(
     charactersLeft,
     -leftGroupW,
     0,
-    0,
+    0 - hideOffset, 
     0,
     leftGroupW,
     groupH,
@@ -683,7 +719,7 @@ function drawCharacters() {
     charactersRight,
     width,
     0,
-    width - rightGroupW,
+    width - rightGroupW + hideOffset, 
     0,
     rightGroupW,
     groupH,
@@ -752,7 +788,7 @@ function drawsignAssets() {
 
   drawsignAsset(
     purple,
-    camX + displayW,
+    camX + displayW - 30,
     camY + 180,
     118,
     112,
@@ -774,7 +810,7 @@ function drawsignAssets() {
 
   drawsignAsset(
     warn,
-    camX + displayW,
+    camX + displayW - 15,
     camY + 550,
     118,
     190,
@@ -863,9 +899,6 @@ function drawsignAsset(
 }
 
 
-// =========================================================
-// EASING
-// =========================================================
 
 function easeOut(t) {
 
@@ -886,9 +919,6 @@ function easeIn(t) {
 }
 
 
-// =========================================================
-// ML5 CALLBACKS
-// =========================================================
 
 function gotFaces(results) {
 
@@ -908,9 +938,6 @@ function gotHands(results) {
 }
 
 
-// =========================================================
-// RESIZE
-// =========================================================
 
 function windowResized() {
 
